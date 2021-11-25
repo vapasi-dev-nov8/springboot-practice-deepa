@@ -3,14 +3,24 @@ package com.vapasi.springdemo.demo.movies.dto;
 import java.util.Objects;
 
 public class Movies {
+    private int id;
     private String name;
     private String directorName;
     private String actorName;
 
-    public Movies(String name, String directorName, String actorName) {
+    public Movies(int id, String name, String directorName, String actorName) {
+        this.id = id;
         this.name = name;
         this.directorName = directorName;
         this.actorName = actorName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -37,25 +47,5 @@ public class Movies {
         this.actorName = actorName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Movies movies = (Movies) o;
-        return name.equals(movies.name) && directorName.equals(movies.directorName) && actorName.equals(movies.actorName);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, directorName, actorName);
-    }
-
-    @Override
-    public String toString() {
-        return "Movies{" +
-                "name='" + name + '\'' +
-                ", directorName='" + directorName + '\'' +
-                ", actorName='" + actorName + '\'' +
-                '}';
-    }
 }
