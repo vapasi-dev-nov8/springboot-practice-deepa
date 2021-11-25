@@ -1,6 +1,7 @@
 package com.vapasi.springdemo.demo.movies.service;
 
-import com.vapasi.springdemo.demo.movies.dto.Movies;
+import com.vapasi.springdemo.demo.movies.dto.MoviesDto;
+import com.vapasi.springdemo.demo.movies.entity.MoviesEntity;
 import com.vapasi.springdemo.demo.movies.repository.MoviesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,14 +15,18 @@ public class MoviesService {
 
     @Autowired
     public MoviesService(MoviesRepository moviesRepository) {
+
         this.moviesRepository = moviesRepository;
     }
 
-    public List<Movies> getAllMovies() {
+    /*public List<MoviesDto> getAllMovies() {
         return moviesRepository.getAllMovies();
-    }
+    }*/
 
-    public Movies saveMovie(Movies movie) {
-        return moviesRepository.saveMovie(movie);
+    public MoviesDto save(MoviesDto moviesDto) {
+        MoviesEntity moviesEntity=MoviesEntity.createEntityFromDto(moviesDto);
+        MoviesEntity savedMovieEntity = moviesRepository.save(moviesEntity);
+        MoviesDto savedMovieDto=MoviesDto.createDtoFromEntity(savedMovieEntity);
+        return savedMovieDto;
     }
 }

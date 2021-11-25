@@ -1,6 +1,6 @@
 package com.vapasi.springdemo.demo.movies.controller;
 
-import com.vapasi.springdemo.demo.movies.dto.Movies;
+import com.vapasi.springdemo.demo.movies.dto.MoviesDto;
 import com.vapasi.springdemo.demo.movies.service.MoviesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,15 +21,15 @@ public class MoviesController {
     }
 
 
-    @GetMapping("/")
-    public ResponseEntity<List<Movies>> getAllMovies(){
-         List<Movies> allMovies=moviesService.getAllMovies();
+   /* @GetMapping("/")
+    public ResponseEntity<List<MoviesDto>> getAllMovies(){
+         List<MoviesDto> allMovies=moviesService.getAllMovies();
          return ResponseEntity.ok().body(allMovies);
-    }
+    }*/
 
     @PostMapping("/")
-    public ResponseEntity<Movies> saveMovie(@RequestBody Movies movie){
-        Movies savedMovie=moviesService.saveMovie(movie);
+    public ResponseEntity<MoviesDto> saveMovie(@RequestBody MoviesDto moviesDto){
+        MoviesDto savedMovie=moviesService.save(moviesDto);
         return new ResponseEntity<> (savedMovie,HttpStatus.CREATED);
 
     }
