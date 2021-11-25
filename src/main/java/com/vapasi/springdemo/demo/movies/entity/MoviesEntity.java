@@ -18,11 +18,8 @@ public class MoviesEntity {
     private String directorName;
     private String actorName;
 
-    public MoviesEntity(Integer id, String name, String directorName, String actorName) {
-        this.id = id;
-        this.name = name;
-        this.directorName = directorName;
-        this.actorName = actorName;
+    public MoviesEntity() {
+
     }
 
     public MoviesEntity(String name, String directorName, String actorName) {
@@ -31,7 +28,7 @@ public class MoviesEntity {
         this.actorName = actorName;
     }
 
-    public static MoviesEntity createEntityFromDto(MoviesDto moviesDto) {
+    public static MoviesEntity createEntityFrom(MoviesDto moviesDto) {
         return new MoviesEntity(moviesDto.getName(), moviesDto.getDirectorName(),moviesDto.getActorName());
     }
 
@@ -78,5 +75,15 @@ public class MoviesEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, directorName, actorName);
+    }
+
+    @Override
+    public String toString() {
+        return "MoviesEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", directorName='" + directorName + '\'' +
+                ", actorName='" + actorName + '\'' +
+                '}';
     }
 }

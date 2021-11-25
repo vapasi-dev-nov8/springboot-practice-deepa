@@ -17,7 +17,7 @@ public class MoviesDto {
         this.actorName = actorName;
     }
 
-    public static MoviesDto createDtoFromEntity(MoviesEntity movieEntity) {
+    public static MoviesDto createDtoFrom(MoviesEntity movieEntity) {
         return new MoviesDto(movieEntity.getId(), movieEntity.getName(), movieEntity.getDirectorName(), movieEntity.getActorName());
     }
 
@@ -64,5 +64,15 @@ public class MoviesDto {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, directorName, actorName);
+    }
+
+    @Override
+    public String toString() {
+        return "MoviesDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", directorName='" + directorName + '\'' +
+                ", actorName='" + actorName + '\'' +
+                '}';
     }
 }
