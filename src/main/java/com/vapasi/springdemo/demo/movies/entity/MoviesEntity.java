@@ -28,8 +28,15 @@ public class MoviesEntity {
         this.actorName = actorName;
     }
 
+    public MoviesEntity(Integer id, String name, String directorName, String actorName) {
+        this.id = id;
+        this.name = name;
+        this.directorName = directorName;
+        this.actorName = actorName;
+    }
+
     public static MoviesEntity createEntityFrom(MoviesDto moviesDto) {
-        return new MoviesEntity(moviesDto.getName(), moviesDto.getDirectorName(),moviesDto.getActorName());
+        return new MoviesEntity(moviesDto.getId(), moviesDto.getName(), moviesDto.getDirectorName(),moviesDto.getActorName());
     }
 
     public Integer getId() {
@@ -69,12 +76,12 @@ public class MoviesEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MoviesEntity that = (MoviesEntity) o;
-        return id == that.id && name.equals(that.name) && directorName.equals(that.directorName) && actorName.equals(that.actorName);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, directorName, actorName);
+        return Objects.hash(id);
     }
 
     @Override

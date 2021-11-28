@@ -17,28 +17,60 @@ public class MoviesService {
 
     @Autowired
     public MoviesService(MoviesRepository moviesRepository) {
-
         this.moviesRepository = moviesRepository;
     }
 
     public List<MoviesDto> getAllMovies() {
-        List<MoviesDto> allMoviesDto= new ArrayList<>();
-        for (MoviesEntity moviesEntity : moviesRepository.findAll()) {
-            allMoviesDto.add(MoviesDto.createDtoFrom(moviesEntity));
-        }
-        return allMoviesDto;
+        List<MoviesDto> moviesDtoList= new ArrayList<>();
+        List<MoviesEntity> moviesEntityList = moviesRepository.findAll();
+        return createDtosFromEntities(moviesEntityList, moviesDtoList);
     }
 
     public MoviesDto save(MoviesDto moviesDto) {
-        MoviesEntity moviesEntity=MoviesEntity.createEntityFrom(moviesDto);
-        MoviesEntity savedMovieEntity = moviesRepository.save(moviesEntity);
-        MoviesDto savedMovieDto=MoviesDto.createDtoFrom(savedMovieEntity);
-        return savedMovieDto;
+        MoviesEntity savedMovieEntity = moviesRepository.save(MoviesEntity.createEntityFrom(moviesDto));
+        return MoviesDto.createDtoFrom(savedMovieEntity);
     }
 
     public Optional<MoviesDto> getMovieById(Integer id) {
         Optional<MoviesEntity> moviesEntity = moviesRepository.findById(id);
-        //return MoviesDto.createDtoFrom(moviesEntity);
+        //return Optional.of(MoviesDto.createDtoFrom(moviesEntity.get()));
         return moviesEntity.map(MoviesDto::createDtoFrom);
+    }
+
+    public List<MoviesDto> getAllMoviesOfActor(String actorName) {
+        List<MoviesDto> moviesDtoList=new ArrayList<>();
+        List<MoviesEntity> moviesEntityList = moviesRepository.findByActorName(actorName);
+        if(!moviesEntityList.isEmpty())
+            moviesDtoList = createDtosFromEntities(moviesEntityList, moviesDtoList);
+        return moviesDtoList;
+    }
+
+    public MoviesDto updateMovie(MoviesDto moviesDto) {
+
+        MoviesEntity moviesEntity = MoviesEntity.createEntityFrom(moviesDto);
+        MoviesEntity storedMovie = moviesRepository.findById(moviesEntity.getId()).orElse(moviesEntity);
+
+        storedMovie.setName(moviesEntity.getName());
+        storedMovie.setActorName(moviesEntity.getActorName());
+        storedMovie.setDirectorName(moviesEntity.getDirectorName());
+
+        return MoviesDto.createDtoFrom(moviesRepository.save(storedMovie));
+
+    }
+
+    public List<MoviesDto> getAllMoviesOfActors(List<String> actorNames) {
+        List<MoviesDto> moviesDtoList=new ArrayList<>();
+        List<MoviesEntity> moviesEntityList = moviesRepository.findByActorNameIn(actorNames);
+        if(!moviesEntityList.isEmpty()){
+            moviesDtoList = createDtosFromEntities(moviesEntityList, moviesDtoList);
+        }
+        return moviesDtoList;
+    }
+
+    private List<MoviesDto> createDtosFromEntities(List<MoviesEntity> moviesEntityList, List<MoviesDto> moviesDtoList) {
+        for(MoviesEntity moviesEntity : moviesEntityList){
+            moviesDtoList.add(MoviesDto.createDtoFrom(moviesEntity));
+        }
+        return moviesDtoList;
     }
 }

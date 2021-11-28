@@ -58,12 +58,12 @@ public class MoviesDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MoviesDto moviesDto = (MoviesDto) o;
-        return id == moviesDto.id && name.equals(moviesDto.name) && directorName.equals(moviesDto.directorName) && actorName.equals(moviesDto.actorName);
+        return (Objects.equals(id, moviesDto.id));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, directorName, actorName);
+        return Objects.hash(id);
     }
 
     @Override

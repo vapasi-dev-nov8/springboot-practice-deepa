@@ -38,7 +38,36 @@ public class MoviesController {
     @GetMapping("/{id}")
     public ResponseEntity<MoviesDto> getMovieById(@PathVariable Integer id){
         Optional<MoviesDto> movie=moviesService.getMovieById(id);
-        return ResponseEntity.ok().body(movie.get());
+        return movie.map(moviesDto -> ResponseEntity.ok().body(moviesDto)).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/actor")
+    public ResponseEntity<List<MoviesDto>> getAllMoviesOfActor(@RequestParam(name="name") String actorName){
+        List<MoviesDto> moviesOfActor=moviesService.getAllMoviesOfActor(actorName);
+
+        if (!moviesOfActor.isEmpty()) {
+            return ResponseEntity.ok().body(moviesOfActor);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/actors")
+    public ResponseEntity<List<MoviesDto>> getAllMoviesOfGivenActors(@RequestParam(name="names") List<String> actorNames){
+        List<MoviesDto> moviesOfActors=moviesService.getAllMoviesOfActors(actorNames);
+
+        if (!moviesOfActors.isEmpty()) {
+            return ResponseEntity.ok().body(moviesOfActors);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/")
+    public ResponseEntity<MoviesDto> updateMovie(@RequestBody MoviesDto moviesDto){
+
+        MoviesDto updatedMovie=moviesService.updateMovie(moviesDto);
+        if(updatedMovie == null)
+            return ResponseEntity.notFound().build();
+        return new ResponseEntity<> (updatedMovie,HttpStatus.CREATED);
 
     }
 
